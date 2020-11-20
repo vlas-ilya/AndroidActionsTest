@@ -30,7 +30,7 @@ jobs:
           GITHUB_USER: vlas-ilya
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.token }}
       - name: tests
-        run: ./gradlew testStageDebugUnitTest
+        run: ./gradlew test
         env:
           GITHUB_USER: vlas-ilya
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.token }}
