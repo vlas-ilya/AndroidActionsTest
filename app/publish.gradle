@@ -2,7 +2,7 @@ apply plugin: 'maven-publish'
 
 def LIB_GROUP_ID = 'com.tease.androidactionstest'
 def LIB_ARTIFACT_ID = 'androidactionstest'
-def LIB_VERSION = '1.1.3';
+def LIB_VERSION = '1.1.4';
 
 publishing {
 	repositories {
