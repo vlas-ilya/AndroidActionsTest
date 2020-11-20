@@ -3,6 +3,16 @@ plugins {
 }
 
 apply from: file('publish.gradle')
+apply plugin: "jacoco"
+
+jacoco {
+	toolVersion = "0.8.6"
+}
+
+tasks.withType(Test) {
+	jacoco.includeNoLocationClasses = true
+	jacoco.excludes = ['jdk.internal.*']
+}
 
 android {
 	compileSdkVersion 30
@@ -26,6 +36,17 @@ android {
 			minifyEnabled false
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 		}
+		debug {
+			testCoverageEnabled true
+		}
+	}
+
+	testOptions {
+		execution 'ANDROID_TEST_ORCHESTRATOR'
+		animationsDisabled true
+		unitTests {
+			includeAndroidResources = true
+		}
 	}
 
 	compileOptions {
@@ -42,4 +63,32 @@ dependencies {
 	testImplementation 'junit:junit:4.+'
 	androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+task jacocoUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+	def coverageSourceDirs = [
+		"src/main/java"
+	]
+	def fileFilter = [
+		'**/R.class',
+		'**/R$*.class',
+		'**/*$ViewInjector*.*',
+		'**/*$ViewBinder*.*',
+		'**/BuildConfig.*',
+		'**/Manifest*.*'
+	]
+	def javaClasses = fileTree(
+		dir: "$buildDir/intermediates/classes/debug",
+		excludes: fileFilter
+	)
+	classDirectories.from = files([ javaClasses ])
+	additionalSourceDirs.from = files(coverageSourceDirs)
+	sourceDirectories.from = files(coverageSourceDirs)
+	executionData.from = fileTree(dir: "$buildDir", includes: [
+		"jacoco/testDebugUnitTest.exec"
+	])
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
 }
