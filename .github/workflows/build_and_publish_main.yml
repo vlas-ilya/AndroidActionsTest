@@ -37,12 +37,12 @@ jobs:
       - name: test report
         uses: asadmansr/android-test-report-action@v1.2.0
         if: ${{ always() }}
-      - name: 'Publish Test Report'
-        if: always()
+      - name: 'publish test report'
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2-preview
         with:
           name: 'test-report'
-          path: build/reports/tests/test/*
+          path: app/build/reports/tests/testDebugUnitTest/*
       - name: build
         run: ./gradlew assemble
         env:
