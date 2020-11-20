@@ -2,9 +2,12 @@ plugins {
 	id 'com.android.application'
 }
 
+apply from: file('publish.gradle')
+
 android {
 	compileSdkVersion 30
 	buildToolsVersion "29.0.3"
+	testBuildType "release"
 
 	defaultConfig {
 		applicationId "com.tease.androidactionstest"
@@ -13,7 +16,9 @@ android {
 		versionCode 1
 		versionName "1.0"
 
-		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+		testInstrumentationRunner "android.test.InstrumentationTestRunner"
+		testHandleProfiling true
+		testFunctionalTest true
 	}
 
 	buildTypes {
@@ -22,6 +27,7 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 		}
 	}
+
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_8
 		targetCompatibility JavaVersion.VERSION_1_8
@@ -29,7 +35,7 @@ android {
 }
 
 dependencies {
-	implementation project(':AndroidLibraryActionTest')
+	implementation 'com.tease.androidactionstest:androidlibraryactionstest:1.1.1.37'
 	implementation 'androidx.appcompat:appcompat:1.2.0'
 	implementation 'com.google.android.material:material:1.2.1'
 	implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

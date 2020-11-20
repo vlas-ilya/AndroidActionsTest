@@ -1,5 +1,2 @@
-include ':AndroidLibraryActionTest'
-project(':AndroidLibraryActionTest').projectDir = file('../AndroidLibraryActionTest')
-
 include ':app'
 rootProject.name = "AndroidActionsTest"

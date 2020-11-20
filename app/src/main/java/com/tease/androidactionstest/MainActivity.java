@@ -3,10 +3,9 @@ package com.tease.androidactionstest;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
-import com.tease.androidlibraryactiontest.HelloMessageFactory;
+import com.tease.androidlibraryactionstest.HelloMessageFactory;
 
 public class MainActivity extends AppCompatActivity {
 
