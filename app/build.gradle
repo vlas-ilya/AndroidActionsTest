@@ -59,23 +59,44 @@ dependencies {
 	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
+
+def coverageSourceDirs = [
+	'./src/main/java'
+]
+
+def debugTree = fileTree(
+	dir: './build/intermediates/javac/debug',
+	excludes: ['**//*R.class',
+	           '**//*R$*.class',
+	           '***/*//*$ViewInjector*.*',
+	           '**//*BuildConfig.*',
+	           '**//*Manifest*.*']
+)
+
+def testDebugUnitTestExec = './build/jacoco/testDebugUnitTest.exec';
+
 task generateJacocoTestReports(type: JacocoReport, dependsOn: "test") {
 	group = "Reporting"
 	description = 'Generate Jacoco Robolectric unit test coverage reports'
 
-	def coverageSourceDirs = [
-		'./src/main/java'
-	]
-
-	classDirectories.from = fileTree(
-		dir: './build/intermediates/javac/debug',
-		excludes: ['**//*R.class',
-		           '**//*R$*.class',
-		           '***/*//*$ViewInjector*.*',
-		           '**//*BuildConfig.*',
-		           '**//*Manifest*.*']
-	)
+	classDirectories.from = files(debugTree)
 	sourceDirectories.from = files(coverageSourceDirs)
 	additionalSourceDirs.from = files(coverageSourceDirs)
-	executionData.from = files('./build/jacoco/testDebugUnitTest.exec')
+	executionData.from = files(testDebugUnitTestExec)
+}
+
+def coverageLimit = System.getenv('COVERAGE_LIMIT') ?: project.properties['COVERAGE_LIMIT']
+
+task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: 'generateJacocoTestReports') {
+	sourceDirectories.from = files(coverageSourceDirs)
+	classDirectories.from = files(debugTree)
+	executionData.from = files(testDebugUnitTestExec)
+	violationRules {
+		failOnViolation = true
+		rule {
+			limit {
+				minimum = coverageLimit.toFloat()
+			}
+		}
+	}
 }
