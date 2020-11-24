@@ -30,6 +30,11 @@ jobs:
           COVERAGE_LIMIT: 0.3
           GITHUB_USER: vlas-ilya
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.token }}
+      - name: 'publish'
+        run: ./gradlew app:publishMavenReleaseApkPublicationToGithubPackagesRepository
+        env:
+          GITHUB_USER: vlas-ilya
+          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.token }}
       - name: 'show test report in logs'
         uses: asadmansr/android-test-report-action@v1.2.0
         if: ${{ always() }}
