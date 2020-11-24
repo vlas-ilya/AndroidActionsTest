@@ -30,7 +30,7 @@ jobs:
           GITHUB_USER: vlas-ilya
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.token }}
       - name: tests
-        run: ./gradlew test
+        run: ./gradlew generateJacocoTestReports
         env:
           GITHUB_USER: vlas-ilya
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.token }}
@@ -43,6 +43,12 @@ jobs:
         with:
           name: 'test-report'
           path: app/build/reports/tests/testDebugUnitTest/*
+      - name: 'publish test coverage report'
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'test-coverage-report'
+          path: app/build/reports/jacoco/generateJacocoTestReports/html/*
       - name: build
         run: ./gradlew assemble
         env:
