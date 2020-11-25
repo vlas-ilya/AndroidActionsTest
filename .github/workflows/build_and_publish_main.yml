@@ -2,6 +2,8 @@ name: "Build and test main branch"
 
 on:
   push:
+    paths:
+      - '**/com/tease/androidactionstest/**'
     branches:
       - main
 
