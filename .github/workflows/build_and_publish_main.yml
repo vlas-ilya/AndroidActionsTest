@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '**/com/tease/androidactionstest/**'
+      - '.github/**'
     branches:
       - main
 
